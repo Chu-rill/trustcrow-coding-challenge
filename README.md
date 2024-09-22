@@ -2,7 +2,7 @@
 
 <!-- ```md -->
 
-# Express Template JS
+# Express Template TS
 
 An Express.js project template to kickstart your Node.js applications with a basic setup.
 
@@ -17,7 +17,7 @@ An Express.js project template to kickstart your Node.js applications with a bas
 # Project Structure
 
 ```bash
-express-template-js/
+express-template-ts/
 ├── index.js
 ├── package.json
 ├── package-lock.json
