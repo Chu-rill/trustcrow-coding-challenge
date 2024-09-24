@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { comparePassword, encrypt } from "../utils/encryption";
+import mongoose, { Document } from "mongoose";
 import {
   passwordMismatchError,
   doesNotExistError,
@@ -35,7 +36,12 @@ interface DeleteUserResponse {
   statusCode: number;
   message: string;
 }
-
+interface UserDocument extends Document {
+  username: string;
+  email: string;
+  password: string;
+  _id: mongoose.Types.ObjectId; // Explicitly state that _id is ObjectId
+}
 interface GetUserResponse {
   status: string;
   error: boolean;
@@ -45,6 +51,39 @@ interface GetUserResponse {
 }
 
 class UserService {
+  // async loginUser(
+  //   username: string,
+  //   password: string
+  // ): Promise<
+  //   | LoginResponse
+  //   | typeof doesNotExistError
+  //   | typeof passwordMismatchError
+  //   | typeof defaultError
+  // > {
+  //   try {
+  //     const user = await userRepository.getUserByUsername(username);
+  //     if (!user) return doesNotExistError;
+
+  //     const isPasswordCorrect = await comparePassword(password, user.password);
+  //     if (!isPasswordCorrect) return passwordMismatchError;
+
+  //     const payload = { username: user.username, id: user._id.toString() };
+  //     const token = jwt.sign(payload, process.env.JWT_SECRET, {
+  //       expiresIn: process.env.JWT_LIFETIME,
+  //     });
+
+  //     return {
+  //       status: "success",
+  //       error: false,
+  //       statusCode: httpStatus.OK,
+  //       user: { username: user.username, id: user._id.toString() },
+  //       token,
+  //     };
+  //   } catch (error) {
+  //     console.error(error);
+  //     return defaultError;
+  //   }
+  // }
   async loginUser(
     username: string,
     password: string
@@ -55,14 +94,18 @@ class UserService {
     | typeof defaultError
   > {
     try {
-      const user = await userRepository.getUserByUsername(username);
+      const user = (await userRepository.getUserByUsername(
+        username
+      )) as UserDocument;
       if (!user) return doesNotExistError;
 
       const isPasswordCorrect = await comparePassword(password, user.password);
       if (!isPasswordCorrect) return passwordMismatchError;
 
-      const payload = { username: user.username, id: user._id };
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      const userId = user._id.toString();
+      const payload = { username: user.username, id: userId };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET!, {
         expiresIn: process.env.JWT_LIFETIME,
       });
 
@@ -70,12 +113,12 @@ class UserService {
         status: "success",
         error: false,
         statusCode: httpStatus.OK,
-        user: { username: user.username, id: user._id },
+        user: { username: user.username, id: userId }, // Ensure _id is a string
         token,
       };
     } catch (error) {
       console.error(error);
-      return defaultError(error);
+      return defaultError;
     }
   }
 
@@ -107,7 +150,7 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError(error);
+      return defaultError;
     }
   }
 
@@ -126,14 +169,14 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError(error);
+      return defaultError;
     }
   }
 
   async getAllUsers(): Promise<{
     status: string;
-    error: boolean;
-    statusCode: number;
+    error?: boolean;
+    statusCode?: number;
     message: string;
     data?: User[];
   }> {
@@ -152,7 +195,7 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError(error);
+      return defaultError;
     }
   }
 
@@ -172,7 +215,7 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError(error);
+      return defaultError;
     }
   }
 
@@ -221,7 +264,7 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError(error);
+      return defaultError;
     }
   }
 }

@@ -1,7 +1,8 @@
+import { Request, Response, NextFunction } from "express";
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-const protect = async (req, res, next) => {
+const protect = async (req: Request, res: Response, next: NextFunction) => {
   let token;
 
   if (
@@ -29,4 +30,4 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+export { protect };

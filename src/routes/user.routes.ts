@@ -1,17 +1,12 @@
 import { Router } from "express";
-import {
-  getAllUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-} from "../controllers/user.controller";
+import userController from "../controllers/user.controller";
 import { protect } from "../middleware/jwt";
 
 const userRoutes = Router();
 
-userRoutes.get("/users", protect, getAllUsers);
-userRoutes.get("/user/:id", protect, getUser);
-userRoutes.put("/user/:id", protect, updateUser);
-userRoutes.delete("/deleteUser/:id", protect, deleteUser);
+userRoutes.get("/users", protect, userController.getAllUsers);
+userRoutes.get("/user/:id", protect, userController.getUser);
+userRoutes.put("/user/:id", protect, userController.updateUser);
+userRoutes.delete("/deleteUser/:id", protect, userController.deleteUser);
 
 export default userRoutes;

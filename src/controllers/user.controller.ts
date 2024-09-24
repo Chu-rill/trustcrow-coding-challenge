@@ -1,12 +1,27 @@
-const sendErrorResponse = require("../error/validation.error");
-const userService = require("../service/user.service");
+import { Request, Response } from "express";
+// import { sendErrorResponse } from "../error/validation.error";
+import userService from "../service/user.service";
+
+// Define the type for the response returned by the user service
+interface UserServiceResponse {
+  status: string;
+  statusCode: number; // Make statusCode optional
+  message?: string;
+  data?: any;
+  error?: boolean;
+}
 
 class UserController {
-  async deleteUser(req, res) {
+  // Delete user method
+  async deleteUser(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     try {
-      const response = await userService.deleteUser(id);
-      if (response.status === "success") res.cookie("jwt", "", { maxAge: 0 });
+      const response: UserServiceResponse = await userService.deleteUser(id);
+
+      if (response.status === "success") {
+        // Clear the JWT cookie
+        res.cookie("jwt", "", { maxAge: 0 });
+      }
 
       return res.status(response.statusCode).send(response);
     } catch (err) {
@@ -15,9 +30,10 @@ class UserController {
     }
   }
 
-  async getAllUsers(req, res) {
+  // Get all users method
+  async getAllUsers(req: Request, res: Response): Promise<Response> {
     try {
-      const response = await userService.getAllUsers();
+      const response: UserServiceResponse = await userService.getAllUsers();
       return res.status(response.statusCode).send(response);
     } catch (err) {
       console.error("Get users error:", err);
@@ -25,10 +41,11 @@ class UserController {
     }
   }
 
-  async getUser(req, res) {
+  // Get a specific user by id
+  async getUser(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     try {
-      const response = await userService.findById(id);
+      const response: UserServiceResponse = await userService.getUser(id);
 
       return res.status(response.statusCode).send(response);
     } catch (err) {
@@ -37,27 +54,16 @@ class UserController {
     }
   }
 
-  // async updateUser(req, res) {
-  //   const { id } = req.params;
-  //   const {username,password} = req.body
-  //   try {
-  //     const updatedUser = await userService.updateUser(id, req.body);
-  //     if (!updatedUser) {
-  //       return res.status(404).json({ message: "User not found" });
-  //     }
-  //     return res.json(updatedUser);
-  //   } catch (err) {
-  //     console.error("Update user error:", err);
-  //     return res.status(500).json({ message: "Internal server error" });
-  //   }
-  // }
-  async updateUser(req, res) {
+  // Update a user's information
+  async updateUser(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const updateData = req.body;
-    try {
-      // Call the update service
-      const response = await userService.updateUser(id, updateData);
 
+    try {
+      const response: UserServiceResponse = await userService.updateUser(
+        id,
+        updateData
+      );
       return res.status(response.statusCode).send(response);
     } catch (err) {
       console.error("Update user error:", err);
@@ -69,4 +75,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController();
+export default new UserController();
