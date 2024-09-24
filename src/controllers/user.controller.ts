@@ -33,7 +33,8 @@ class UserController {
   // Get all users method
   async getAllUsers(req: Request, res: Response): Promise<Response> {
     try {
-      const response: UserServiceResponse = await userService.getAllUsers();
+      const response: UserServiceResponse | any =
+        await userService.getAllUsers();
       return res.status(response.statusCode).send(response);
     } catch (err) {
       console.error("Get users error:", err);
@@ -60,7 +61,7 @@ class UserController {
     const updateData = req.body;
 
     try {
-      const response: UserServiceResponse = await userService.updateUser(
+      const response: UserServiceResponse | any = await userService.updateUser(
         id,
         updateData
       );
