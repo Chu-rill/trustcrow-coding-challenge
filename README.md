@@ -18,40 +18,42 @@ An Express.js project template to kickstart your Node.js applications with a bas
 
 ```bash
 express-template-ts/
-├── index.js
 ├── package.json
 ├── package-lock.json
 ├── README.md
 ├── src
 │   ├── controllers
-│   │   ├── auth.controller.js
-│   │   └── user.controller.js
+│   │   ├── auth.controller.ts
+│   │   └── user.controller.ts
 │   ├── error
-│   │   ├── error.js
-│   │   └── validation.error.js
-│   ├── middleWare
-│   │   ├── jwt.js
-│   │   └── ValidationMiddleware.js
+│   │   ├── error.ts
+│   │   └── validation.error.ts
+│   ├── index.ts
+│   ├── middleware
+│   │   ├── jwt.ts
+│   │   └── ValidationMiddleware.ts
 │   ├── models
-│   │   └── User.js
+│   │   └── User.ts
 │   ├── repositories
-│   │   └── user.repository.js
+│   │   └── user.repository.ts
 │   ├── routes
-│   │   ├── auth.routes.js
-│   │   └── user.routes.js
+│   │   ├── auth.routes.ts
+│   │   └── user.routes.ts
 │   ├── service
-│   │   ├── auth.service.js
-│   │   └── user.service.js
+│   │   └── user.service.ts
+│   ├── types
+│   │   └── types.d.ts
 │   ├── utils
-│   │   ├── db.js
-│   │   ├── email.js
-│   │   └── encryption.js
+│   │   ├── db.ts
+│   │   ├── email.ts
+│   │   └── encryption.ts
 │   ├── validation
-│   │   └── auth.validation.js
+│   │   └── auth.validation.ts
 │   └── views
 │       ├── forgetPassword.handlebars
 │       ├── welcome.hbs
 │       └── welcomeMessage.handlebars
+├── tsconfig.json
 └── vercel.json
 ```
 
