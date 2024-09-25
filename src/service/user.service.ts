@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { comparePassword, encrypt } from "../utils/encryption";
-import mongoose, { Document } from "mongoose";
 import {
   passwordMismatchError,
   doesNotExistError,
@@ -9,81 +8,16 @@ import {
 } from "../error/error";
 import httpStatus from "http-status";
 import userRepository from "../repositories/user.repository";
-
-interface User {
-  username: string;
-  email: string;
-}
-
-interface LoginResponse {
-  status: string;
-  error: boolean;
-  statusCode: number;
-  user: { username: string; id: string };
-  token?: string;
-}
-
-interface CreateUserResponse {
-  status: string;
-  error: boolean;
-  statusCode: number;
-  user: { username: string; email: string };
-}
-
-interface DeleteUserResponse {
-  status: string;
-  error: boolean;
-  statusCode: number;
-  message: string;
-}
-interface UserDocument extends Document {
-  username: string;
-  email: string;
-  password: string;
-  _id: mongoose.Types.ObjectId; // Explicitly state that _id is ObjectId
-}
-interface GetUserResponse {
-  status: string;
-  error: boolean;
-  statusCode: number;
-  message: string;
-  data?: User | null;
-}
+import {
+  LoginResponse,
+  CreateUserResponse,
+  DeleteUserResponse,
+  GetUserResponse,
+  User,
+  UserDocument,
+} from "../types/ResponseTypes";
 
 class UserService {
-  // async loginUser(
-  //   username: string,
-  //   password: string
-  // ): Promise<
-  //   | LoginResponse
-  //   | typeof doesNotExistError
-  //   | typeof passwordMismatchError
-  //   | typeof defaultError
-  // > {
-  //   try {
-  //     const user = await userRepository.getUserByUsername(username);
-  //     if (!user) return doesNotExistError;
-
-  //     const isPasswordCorrect = await comparePassword(password, user.password);
-  //     if (!isPasswordCorrect) return passwordMismatchError;
-
-  //     const payload = { username: user.username, id: user._id.toString() };
-  //     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-  //       expiresIn: process.env.JWT_LIFETIME,
-  //     });
-
-  //     return {
-  //       status: "success",
-  //       error: false,
-  //       statusCode: httpStatus.OK,
-  //       user: { username: user.username, id: user._id.toString() },
-  //       token,
-  //     };
-  //   } catch (error) {
-  //     console.error(error);
-  //     return defaultError;
-  //   }
-  // }
   async loginUser(
     username: string,
     password: string

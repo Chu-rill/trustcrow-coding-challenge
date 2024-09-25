@@ -1,12 +1,12 @@
 import httpStatus from "http-status";
 
-interface ErrorResponse {
+type ErrorResponse = {
   status: string;
   error: boolean;
   message: string;
   statusCode: number;
   fields?: string[]; // Optional, only for validation errors
-}
+};
 
 const noDuplicateError: ErrorResponse = {
   status: "error",
