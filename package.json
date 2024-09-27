@@ -7,7 +7,8 @@
     "dev": "tsc && nodemon dist/index.js",
     "start": "tsc && node dist/index.js",
     "prismaMigrate": "npx prisma migrate dev --name init",
-    "prismaStart": "npx prisma init --datasource-provider postgresql"
+    "prismaStart": "npx prisma init --datasource-provider postgresql",
+    "prismaGenerate": "npx prisma generate"
   },
   "keywords": [],
   "author": "",

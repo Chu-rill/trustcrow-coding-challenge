@@ -1,6 +1,7 @@
 import User from "../models/User";
 import { Document } from "mongoose";
-
+// import { PrismaClient } from '@prisma/client';
+// const prisma = new PrismaClient();
 interface UserDocument extends Document {
   username: string;
   password: string;
