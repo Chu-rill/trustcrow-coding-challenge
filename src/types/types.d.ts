@@ -1,4 +1,4 @@
-import { IUser } from "../models/User"; // Assuming you have an IUser interface for User model
+import { IUser } from "../component/user/User"; // Assuming you have an IUser interface for User model
 
 declare global {
   namespace Express {

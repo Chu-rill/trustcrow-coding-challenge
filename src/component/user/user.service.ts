@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
-import { comparePassword, encrypt } from "../utils/encryption";
+import { comparePassword, encrypt } from "../../utils/encryption";
 import {
   passwordMismatchError,
   doesNotExistError,
   defaultError,
   noDuplicateError,
-} from "../error/error";
+} from "../../error/error";
 import httpStatus from "http-status";
-import userRepository from "../repositories/user.repository";
+import userRepository from "./user.repository";
 import {
   LoginResponse,
   CreateUserResponse,
@@ -15,7 +15,7 @@ import {
   GetUserResponse,
   User,
   UserDocument,
-} from "../types/ResponseTypes";
+} from "../../types/ResponseTypes";
 
 class UserService {
   async loginUser(
