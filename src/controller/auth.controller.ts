@@ -1,6 +1,6 @@
 import { Request, Response } from "express"; // Import Request and Response types
-import userService from "../service/user.service"; // Ensure the userService is exported correctly
-import emailService from "../utils/email"; // Ensure the emailService is exported correctly
+import userService from "../../service/user.service"; // Ensure the userService is exported correctly
+import emailService from "../../utils/email"; // Ensure the emailService is exported correctly
 
 class AuthController {
   async login(req: Request, res: Response): Promise<Response> {

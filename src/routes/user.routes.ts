@@ -1,5 +1,5 @@
 import { Router } from "express";
-import userController from "../controllers/user.controller";
+import userController from "../component/user/user.controller";
 import { protect } from "../middleware/jwt";
 
 const userRoutes = Router();

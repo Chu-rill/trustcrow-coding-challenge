@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authController from "../controllers/auth.controller";
+import authController from "../component/auth/auth.controller";
 import {
   login_query_validator,
   register_query_validator,
