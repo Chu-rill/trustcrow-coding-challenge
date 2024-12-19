@@ -4,9 +4,9 @@ import morgan from "morgan";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
-import userRoutes from "./routes/user.routes";
-import authRoutes from "./routes/auth.routes";
 import { connectDB } from "./utils/db";
+import authRoutes from "./component/auth/auth.routes";
+import userRoutes from "./component/user/user.routes";
 
 // Load environment variables
 dotenv.config();
