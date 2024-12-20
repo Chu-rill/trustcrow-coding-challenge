@@ -48,7 +48,7 @@ app.get("/", async (req: Request, res: Response) => {
   res.json({ success: true, message: "Backend Connected Successfully" });
 });
 
-app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/docs", swaggerui.serve, swaggerui.setup(swaggerDocument));
 
