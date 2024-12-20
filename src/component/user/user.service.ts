@@ -15,7 +15,7 @@ import {
   GetUserResponse,
   User,
   UserDocument,
-} from "../../types/ResponseTypes";
+} from "./user.response";
 
 class UserService {
   async loginUser(
