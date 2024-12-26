@@ -6,6 +6,7 @@ interface UserDocument extends Document {
   username: string;
   password: string;
   email: string;
+  profile: string;
 }
 
 class UserRepository {
