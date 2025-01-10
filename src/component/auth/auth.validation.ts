@@ -32,3 +32,14 @@ export const login_query_validator = Joi.object({
     "any.required": "Password is a required field",
   }),
 });
+
+export interface LoginDTO {
+  username: string;
+  password: string;
+}
+
+export interface SignUpDTO {
+  username: string;
+  password: string;
+  email: string;
+}

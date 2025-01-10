@@ -17,6 +17,7 @@ import {
   UserDocument,
 } from "./user.response";
 import cloudinary from "../../utils/cloudinary";
+import { SignUpDTO } from "../auth/auth.validation";
 
 class UserService {
   async loginUser(
@@ -58,21 +59,20 @@ class UserService {
   }
 
   async createUser(
-    username: string,
-    password: string,
-    email: string
+    dto: SignUpDTO
   ): Promise<
     CreateUserResponse | typeof noDuplicateError | typeof defaultError
   > {
     try {
-      const existingUser = await userRepository.getUserByUsername(username);
+      const existingUser = await userRepository.getUserByUsername(dto.username);
       if (existingUser) return noDuplicateError;
 
-      const hashedPassword = await encrypt(password);
+      const hashedPassword = await encrypt(dto.password);
+      const { username, email, password } = dto;
       const user = await userRepository.createUser({
         username,
-        password: hashedPassword,
         email,
+        password: hashedPassword,
       });
 
       if (!user) return defaultError;

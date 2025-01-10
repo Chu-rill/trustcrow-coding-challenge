@@ -1,6 +1,7 @@
 import { Request, Response } from "express"; // Import Request and Response types
 import userService from "../user/user.service"; // Ensure the userService is exported correctly
 import emailService from "../../utils/email"; // Ensure the emailService is exported correctly
+import { LoginDTO, SignUpDTO } from "./auth.validation";
 
 class AuthController {
   async login(req: Request, res: Response): Promise<Response> {
@@ -17,7 +18,7 @@ class AuthController {
   async signup(req: Request, res: Response): Promise<Response> {
     const { username, password, email } = req.body;
     try {
-      const response = await userService.createUser(username, password, email);
+      const response = await userService.createUser(req.body as SignUpDTO);
       if (response.error) {
         return res.status(response.statusCode).json(response);
       }
