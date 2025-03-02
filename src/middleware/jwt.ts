@@ -1,8 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 const jwt = require("jsonwebtoken");
-const User = require("../component/user/User");
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-const protect = async (req: Request, res: Response, next: NextFunction) => {
+const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let token;
 
   if (
@@ -16,8 +21,20 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
       // Verify the token using the JWT_SECRET
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Find the user from the database based on the decoded token (without password)
-      req.user = await User.findById(decoded.id).select("-password");
+      const user = await prisma.user.findUnique({
+        where: {
+          id: decoded.id, // Ensure this matches the token payload
+        },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+        },
+      });
+
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
 
       // Proceed to the next middleware or route handler
       next();
@@ -30,4 +47,4 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { protect };
+export { authenticate };

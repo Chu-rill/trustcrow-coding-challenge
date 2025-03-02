@@ -4,12 +4,9 @@ import taskService from "./task.service";
 class TaskController {
   async createTask(req: Request, res: Response): Promise<Response> {
     const { title, description } = req.body;
+    const userId = req.user?.id as string;
     try {
-      const response = await taskService.createTask(
-        title,
-        description,
-        req.user.id
-      );
+      const response = await taskService.createTask(title, description, userId);
       return res.status(response.statusCode).send(response);
     } catch (err) {
       console.error("Create task error:", err);
@@ -27,8 +24,9 @@ class TaskController {
     }
   }
   async getTasks(req: Request, res: Response): Promise<Response> {
+    const userId = req.user?.id as string;
     try {
-      const response = await taskService.getTasks(req.user.id);
+      const response = await taskService.getTasks(userId);
       return res.status(response.statusCode).send(response);
     } catch (err) {
       console.error("Get tasks error:", err);
