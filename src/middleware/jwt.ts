@@ -35,6 +35,7 @@ const authenticate = async (
       if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
+      req.user = { id: decoded.id };
 
       // Proceed to the next middleware or route handler
       next();
