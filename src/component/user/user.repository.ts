@@ -1,26 +1,26 @@
-import User from "./User";
-import { Document } from "mongoose";
-// import { PrismaClient } from '@prisma/client';
-// const prisma = new PrismaClient();
-interface UserDocument extends Document {
-  username: string;
-  password: string;
-  email: string;
-  profile: string;
-}
+import { PrismaClient, User } from "@prisma/client";
 
 class UserRepository {
-  // Find all users
-  async findAll(): Promise<UserDocument[]> {
-    return await User.find();
+  private prisma: PrismaClient;
+
+  constructor() {
+    this.prisma = new PrismaClient();
   }
 
-  // Find user by ID
-  async findById(id: string): Promise<UserDocument | null> {
-    return await User.findById(id);
+  async findByUsername(
+    username: string
+  ): Promise<Pick<User, "id" | "username" | "email" | "password"> | null> {
+    return this.prisma.user.findUnique({
+      where: { username },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+      },
+    });
   }
 
-  // Create a new user
   async createUser({
     username,
     password,
@@ -29,34 +29,10 @@ class UserRepository {
     username: string;
     password: string;
     email: string;
-  }): Promise<UserDocument> {
-    const user = await User.create({
-      username,
-      password,
-      email,
+  }): Promise<User> {
+    return this.prisma.user.create({
+      data: { username, password, email },
     });
-    return user;
-  }
-
-  // Update a user by ID
-  async update(
-    id: string,
-    updatedUser: Partial<UserDocument>
-  ): Promise<UserDocument | null> {
-    return await User.findByIdAndUpdate(id, updatedUser, {
-      new: true,
-      runValidators: true,
-    });
-  }
-
-  // Delete a user by ID
-  async delete(id: string): Promise<UserDocument | null> {
-    return await User.findByIdAndDelete(id);
-  }
-
-  // Find user by username
-  async getUserByUsername(username: string): Promise<UserDocument | null> {
-    return await User.findOne({ username });
   }
 }
 

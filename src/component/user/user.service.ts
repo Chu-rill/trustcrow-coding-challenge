@@ -8,11 +8,7 @@ import {
 } from "../../error/error";
 import httpStatus from "http-status";
 import userRepository from "./user.repository";
-import {
-  LoginResponse,
-  CreateUserResponse,
-  User,
-} from "./user.response";
+import { LoginResponse, CreateUserResponse } from "./user.response";
 
 class UserService {
   async loginUser(
@@ -25,16 +21,13 @@ class UserService {
     | typeof defaultError
   > {
     try {
-      const user = (await userRepository.getUserByUsername(
-        username
-      )) as UserDocument;
+      const user = await userRepository.findByUsername(username);
       if (!user) return doesNotExistError;
 
       const isPasswordCorrect = await comparePassword(password, user.password);
       if (!isPasswordCorrect) return passwordMismatchError;
 
-      const userId = user._id.toString();
-      const payload = { username: user.username, id: userId };
+      const payload = { username: user.username, id: user.id };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET!, {
         expiresIn: process.env.JWT_LIFETIME,
@@ -44,7 +37,7 @@ class UserService {
         status: "success",
         error: false,
         statusCode: httpStatus.OK,
-        user: { username: user.username, id: userId }, // Ensure _id is a string
+        user: { username: user.username, id: user.id },
         token,
       };
     } catch (error) {
@@ -54,16 +47,17 @@ class UserService {
   }
 
   async createUser(
-    username:string, password:string, email:string
+    username: string,
+    password: string,
+    email: string
   ): Promise<
     CreateUserResponse | typeof noDuplicateError | typeof defaultError
   > {
     try {
-      const existingUser = await userRepository.getUserByUsername(username);
+      const existingUser = await userRepository.findByUsername(username);
       if (existingUser) return noDuplicateError;
 
       const hashedPassword = await encrypt(password);
-      // const { username, email, password } = dto;
       const user = await userRepository.createUser({
         username,
         email,
