@@ -5,7 +5,6 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import path from "path";
 import rateLimit from "express-rate-limit";
-import { connectDB } from "./utils/db";
 const swaggerui = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load(
@@ -55,5 +54,4 @@ app.use("/api/v1/docs", swaggerui.serve, swaggerui.setup(swaggerDocument));
 // Start server and connect to the database
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
-  // connectDB();
 });

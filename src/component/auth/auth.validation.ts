@@ -33,13 +33,3 @@ export const login_query_validator = Joi.object({
   }),
 });
 
-export interface LoginDTO {
-  username: string;
-  password: string;
-}
-
-export interface SignUpDTO {
-  username: string;
-  password: string;
-  email: string;
-}
