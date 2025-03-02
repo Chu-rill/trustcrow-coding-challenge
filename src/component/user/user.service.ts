@@ -5,6 +5,7 @@ import {
   doesNotExistError,
   defaultError,
   noDuplicateError,
+  createErrorResponse,
 } from "../../error/error";
 import httpStatus from "http-status";
 import userRepository from "./user.repository";
@@ -19,6 +20,7 @@ class UserService {
     | typeof doesNotExistError
     | typeof passwordMismatchError
     | typeof defaultError
+    | typeof createErrorResponse
   > {
     try {
       const user = await userRepository.findByUsername(username);
@@ -42,7 +44,10 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse(
+        "All fields are required",
+        httpStatus.BAD_REQUEST
+      );
     }
   }
 
@@ -51,7 +56,10 @@ class UserService {
     password: string,
     email: string
   ): Promise<
-    CreateUserResponse | typeof noDuplicateError | typeof defaultError
+    | CreateUserResponse
+    | typeof noDuplicateError
+    | typeof defaultError
+    | typeof createErrorResponse
   > {
     try {
       const existingUser = await userRepository.findByUsername(username);
@@ -74,7 +82,10 @@ class UserService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse(
+        "Invalid username or password",
+        httpStatus.UNAUTHORIZED
+      );
     }
   }
 }

@@ -1,5 +1,5 @@
 import httpStatus from "http-status";
-import { defaultError } from "../../error/error";
+import { defaultError, createErrorResponse } from "../../error/error";
 import taskRepository from "./task.repository";
 import { TaskResponse, TasksResponse } from "./task.response";
 import { Task } from "@prisma/client";
@@ -9,7 +9,7 @@ class TaskService {
     title: string,
     description: string,
     userId: string
-  ): Promise<TaskResponse | typeof defaultError> {
+  ): Promise<TaskResponse | typeof createErrorResponse> {
     try {
       const task = await taskRepository.createTask({
         title,
@@ -38,10 +38,15 @@ class TaskService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse(
+        "Not authorized, no token",
+        httpStatus.UNAUTHORIZED
+      );
     }
   }
-  async getTaskById(id: number): Promise<TaskResponse | typeof defaultError> {
+  async getTaskById(
+    id: number
+  ): Promise<TaskResponse | typeof createErrorResponse> {
     try {
       const task = await taskRepository.findTaskById(id);
       if (!task) {
@@ -66,10 +71,15 @@ class TaskService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse(
+        "Not authorized, no token",
+        httpStatus.UNAUTHORIZED
+      );
     }
   }
-  async getTasks(userId: string): Promise<TasksResponse | typeof defaultError> {
+  async getTasks(
+    userId: string
+  ): Promise<TasksResponse | typeof createErrorResponse> {
     try {
       const tasks: Task[] = await taskRepository.getTasks(userId);
       return {
@@ -81,14 +91,14 @@ class TaskService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse("Task not found", httpStatus.NOT_FOUND);
     }
   }
   async updateTask(
     id: number,
     title: string,
     description: string
-  ): Promise<TaskResponse | typeof defaultError> {
+  ): Promise<TaskResponse | typeof createErrorResponse> {
     try {
       const task = await taskRepository.updateTask({ id, title, description });
       if (!task) {
@@ -113,10 +123,15 @@ class TaskService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse(
+        "Not authorized, no token",
+        httpStatus.UNAUTHORIZED
+      );
     }
   }
-  async deleteTask(id: number): Promise<TaskResponse | typeof defaultError> {
+  async deleteTask(
+    id: number
+  ): Promise<TaskResponse | typeof createErrorResponse> {
     try {
       const task = await taskRepository.deleteTask(id);
       if (!task) {
@@ -141,7 +156,7 @@ class TaskService {
       };
     } catch (error) {
       console.error(error);
-      return defaultError;
+      return createErrorResponse("Task not found", httpStatus.NOT_FOUND);
     }
   }
 }
