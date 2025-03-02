@@ -30,6 +30,7 @@ class TaskService {
         statusCode: httpStatus.CREATED,
         message: "Task created successfully",
         data: {
+          id: task.id,
           title: task.title,
           description: task.description,
           userId: task.userId,
@@ -57,6 +58,7 @@ class TaskService {
         statusCode: httpStatus.OK,
         message: "Task found",
         data: {
+          id: task.id,
           title: task.title,
           description: task.description,
           userId: task.userId,
@@ -103,6 +105,7 @@ class TaskService {
         statusCode: httpStatus.OK,
         message: "Task updated successfully",
         data: {
+          id: task.id,
           title: task.title,
           description: task.description,
           userId: task.userId,
@@ -130,6 +133,7 @@ class TaskService {
         statusCode: httpStatus.OK,
         message: "Task deleted successfully",
         data: {
+          id: task.id,
           title: task.title,
           description: task.description,
           userId: task.userId,

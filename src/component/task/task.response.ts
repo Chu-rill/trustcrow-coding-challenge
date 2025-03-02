@@ -5,7 +5,7 @@ export type TaskResponse = {
   error: boolean;
   statusCode: number;
   message: string;
-  data: { title: string; description: string; userId: string };
+  data: { id: number; title: string; description: string; userId: string };
 };
 
 export type TasksResponse = {

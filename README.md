@@ -1,80 +1,85 @@
 ### **Backend README**
 
-<!-- ```md -->
-
-# Express Template TS
-
-An Express.js project template to kickstart your Node.js applications with a basic setup.
+# Trustcrow API
 
 ## Features
 
-**Express.js:** A minimalist web framework for Node.js.
-**ESLint:** For linting JavaScript code.
-**Pre-configured Routes:** Basic routing setup to get started with.
-**Environment Variables:** Uses .env file for environment configuration.
-**Nodemon:** For auto-restarting the server during development.
+- **Express.js:** A minimalist web framework for Node.js.
+- **Prisma:** An ORM for database management.
+- **ESLint:** For linting JavaScript code.
+- **Pre-configured Routes:** Basic routing setup to get started with.
+- **Environment Variables:** Uses .env file for environment configuration.
+- **Nodemon:** For auto-restarting the server during development.
+- **Swagger:** API documentation using Swagger UI.
 
-# Project Structure
+## Project Structure
 
 ```bash
-express-template-ts/
+trustcrow-api/
+├── .env
+├── .env.example
+├── .gitignore
+├── jest.config.ts
 ├── package.json
-├── package-lock.json
+├── prisma/
+│   ├── migrations/
+│   │   └── 20250302173216_add_user_task_relation/
+│   │       └── migration.sql
+│   ├── migration_lock.toml
+│   └── schema.prisma
 ├── README.md
-├── src
-│   ├── controllers
-│   │   ├── auth.controller.ts
-│   │   └── user.controller.ts
-│   ├── error
+├── src/
+│   ├── component/
+│   │   ├── auth/
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.routes.ts
+│   │   │   └── auth.validation.ts
+│   │   ├── task/
+│   │   │   ├── task.controller.ts
+│   │   │   ├── task.routes.ts
+│   │   │   ├── task.service.ts
+│   │   │   ├── task.validation.ts
+│   │   │   ├── task.repository.ts
+│   │   │   └── task.response.ts
+│   │   ├── user/
+│   │       ├── user.repository.ts
+│   │       ├── user.response.ts
+│   │       └── user.service.ts
+│   ├── error/
 │   │   ├── error.ts
 │   │   └── validation.error.ts
 │   ├── index.ts
-│   ├── middleware
+│   ├── middleware/
 │   │   ├── jwt.ts
 │   │   └── ValidationMiddleware.ts
-│   ├── models
-│   │   └── User.ts
-│   ├── repositories
-│   │   └── user.repository.ts
-│   ├── routes
-│   │   ├── auth.routes.ts
-│   │   └── user.routes.ts
-│   ├── service
-│   │   └── user.service.ts
-│   ├── types
-│   │   └── types.d.ts
-│   ├── utils
-│   │   ├── db.ts
-│   │   ├── email.ts
-│   │   └── encryption.ts
-│   ├── validation
-│   │   └── auth.validation.ts
-│   └── views
-│       ├── forgetPassword.handlebars
-│       ├── welcome.hbs
-│       └── welcomeMessage.handlebars
+│   ├── swagger.yaml
+│   └── utils/
+│       ├── encryption.ts
+│       └── types.d.ts
 ├── tsconfig.json
+└── types/
+    └── express.d.ts
 └── vercel.json
 ```
 
-# Prerequisites
+## Prerequisites
 
-1. Node.js (v14 or higher)
-2. NPM or Yarn
+- Node.js (v14 or higher)
+- NPM or Yarn
+- PostgreSQL database
 
-# Installation
+## Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Chu-rill/express-template-js.git
-
+git clone https://github.com/Chu-rill/trustcrow-api.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd express-template-js
+cd trustcrow-api
 ```
 
 3. Install dependencies:
@@ -89,22 +94,41 @@ npm install
 cp .env.example .env
 ```
 
-5. Start the development server:
+5. Update the .env file with your environment variables:
+
+```bash
+PORT=4000
+JWT_SECRET=your_jwt_secret
+JWT_LIFETIME=1h
+ALLOWED_URL=http://localhost:3000
+DATABASE_URL=your_database_url
+```
+
+6. Initialize Prisma and run migrations:
+
+```bash
+npx prisma init
+npx prisma migrate dev --name init
+npx prisma generate
+```
+
+7. Start the development server:
 
 ```bash
 npm run dev
 ```
 
-# Usage
+## Usage
 
 1. Open http://localhost:{PORT} in your browser to see the app running.
-2. Customize routes by modifying files in the routes/ folder.
+2. Access the Swagger documentation at http://localhost:{PORT}/api/v1/docs.
+3. Customize routes by modifying files in the component folder.
 
-# Available Scripts
+## Available Scripts
 
-1. **npm start:** Starts the server in production mode.
-2. **npm run dev:** Starts the server with Nodemon for auto-reloading during development.
+1. npm start: Starts the server in production mode.
+2. npm run dev: Starts the server with Nodemon for auto-reloading during development.
 
-# License
+## License
 
 This project is licensed under the MIT License.
