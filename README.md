@@ -1,5 +1,3 @@
-### **Backend README**
-
 # Trustcrow API
 
 ## Features
@@ -15,11 +13,10 @@
 ## Project Structure
 
 ```bash
-trustcrow-api/
+trustcrow-coding-challenge/
 ├── .env
 ├── .env.example
 ├── .gitignore
-├── jest.config.ts
 ├── package.json
 ├── prisma/
 │   ├── migrations/
@@ -73,13 +70,13 @@ trustcrow-api/
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Chu-rill/trustcrow-api.git
+git clone https://github.com/Chu-rill/trustcrow-coding-challenge.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd trustcrow-api
+cd trustcrow-coding-challenge
 ```
 
 3. Install dependencies:
